@@ -1,16 +1,17 @@
 import tweepy
 from dotenv import dotenv_values
-import tweepy.cursor
+import tweepy.client
 
 keys = dotenv_values()
-consumer_key = keys["CONSUMER_KEY"]
-consumer_secret = keys["CONSUMER_SECRET"]
-access_token = keys["ACCESS_TOKEN"]
-access_secret = keys["ACCESS_SECRET"]
+CONSUMER_KEY = keys["CONSUMER_KEY"]
+CONSUMER_SECRET = keys["CONSUMER_SECRET"]
+ACCESS_TOKEN = keys["ACCESS_TOKEN"]
+ACCESS_SECRET = keys["ACCESS_SECRET"]
+BEARER_TOKEN = keys["BEARER_TOKEN"]
 
+client = tweepy.Client(BEARER_TOKEN,CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET)
 
-auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_secret)
-api = tweepy.API(auth)
-
-for tweet in tweepy.Cursor(api.home_timeline).items(10):
-    print(tweet.text)
+response = client.create_tweet(
+    text="This Tweet was Tweeted using Tweepy and Twitter API v2!"
+)
+print(f"https://twitter.com/user/status/{response.data['id']}")
