@@ -2,16 +2,30 @@ import tweepy
 from dotenv import dotenv_values
 import tweepy.client
 
-keys = dotenv_values()
-CONSUMER_KEY = keys["CONSUMER_KEY"]
-CONSUMER_SECRET = keys["CONSUMER_SECRET"]
-ACCESS_TOKEN = keys["ACCESS_TOKEN"]
-ACCESS_SECRET = keys["ACCESS_SECRET"]
-BEARER_TOKEN = keys["BEARER_TOKEN"]
+class tweeterClient():
+    def __init__(self):
+        keys = dotenv_values()
+        self.CONSUMER_KEY = keys["CONSUMER_KEY"]
+        self.CONSUMER_SECRET = keys["CONSUMER_SECRET"]
+        self.ACCESS_TOKEN = keys["ACCESS_TOKEN"]
+        self.ACCESS_SECRET = keys["ACCESS_SECRET"]
+        self.BEARER_TOKEN = keys["BEARER_TOKEN"]
+        
+        self.client = tweepy.Client(
+            self.BEARER_TOKEN,
+            self.CONSUMER_KEY,
+            self.CONSUMER_SECRET,
+            self.ACCESS_TOKEN,
+            self.ACCESS_SECRET)
+    
 
-client = tweepy.Client(BEARER_TOKEN,CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET)
-
-response = client.create_tweet(
-    text="This Tweet was Tweeted using Tweepy and Twitter API v2!"
-)
-print(f"https://twitter.com/user/status/{response.data['id']}")
+    def tweet(self, message=""):
+        response = self.client.create_tweet(
+            text=message
+        )
+        return response
+    
+if __name__=="__main__":
+    tweeter_client = tweeterClient()
+    response = tweeter_client.tweet("this tweet is also using tweepy")
+    print(f"https://twitter.com/user/status/{response.data['id']}")
